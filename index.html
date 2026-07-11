@@ -2,7 +2,9 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Designações de Departamentos</title>
+  
   <!-- Importação da fonte Cabin -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,179 +13,180 @@
   <style>
     * {
       box-sizing: border-box;
-    }
-    body {
-      font-family: 'Cabin', sans-serif;
       margin: 0;
       padding: 0;
+    }
+    
+    body {
+      font-family: 'Cabin', sans-serif;
       background-color: #f0f2f5;
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding: 10px;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
 
-    /* Barra de ferramentas flutuante na tela (Não sai na impressão) */
+    /* --- PAINEL DE CONTROLE RESPONSIVO (TELA) --- */
     .control-bar {
-      margin-top: 15px;
       background: white;
-      padding: 10px 20px;
+      padding: 15px;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      margin-bottom: 15px;
+      width: 100%;
+      max-width: 600px;
       display: flex;
-      align-items: center;
-      gap: 20px;
+      flex-direction: column;
+      gap: 12px;
     }
-    .sync-btn {
-      background-color: #2563eb;
+    
+    .sync-btn, .print-btn {
       color: white;
       border: none;
-      padding: 8px 16px;
+      padding: 10px 16px;
       border-radius: 6px;
       cursor: pointer;
       font-family: 'Cabin', sans-serif;
       font-size: 14px;
       font-weight: 600;
       transition: background 0.2s;
+      width: 100%;
+      text-align: center;
     }
-    .sync-btn:hover {
-      background-color: #1d4ed8;
-    }
+    
+    .sync-btn { background-color: #4b5563; }
+    .sync-btn:hover { background-color: #374151; }
+    
+    .print-btn { background-color: #2563eb; }
+    .print-btn:hover { background-color: #1d4ed8; }
 
-    /* Estilização do seletor de semanas */
     .seletor-container {
       display: flex;
-      align-items: center;
-      gap: 8px;
+      flex-direction: column;
+      gap: 6px;
       font-size: 14px;
       font-weight: 600;
       color: #3d2411;
+      width: 100%;
     }
+    
     .seletor-semana {
       font-family: 'Cabin', sans-serif;
       font-size: 14px;
       font-weight: 600;
-      padding: 6px 12px;
+      padding: 8px 12px;
       border-radius: 6px;
       border: 1px solid #85581A;
       color: #3d2411;
       background-color: white;
       cursor: pointer;
       outline: none;
+      width: 100%;
     }
 
-    /* Dimensões rígidas da folha A4 */
+    /* --- LAYOUT ADAPTÁVEL PARA TELA DO CELULAR --- */
     .a4-page {
-      width: 210mm;
-      height: 297mm;
+      width: 100%;
+      max-width: 600px;
       background-color: #ffffff;
-      padding: 10mm 10mm 20mm 10mm;
-      margin: 15px auto;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 20px 15px;
       display: flex;
       flex-direction: column;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
 
-    /* Alinhamento do Título Principal */
     .title-container {
       text-align: center;
-      margin-bottom: 18px;
+      margin-bottom: 15px;
     }
+    
     .title-container h1 {
-      font-size: 35px;
-      font-weight: 700;
+      font-size: 30px;
+      font-weight: 600;
       color: #000000;
-      margin: 0;
       padding-bottom: 6px;
       display: inline-block;
       border-bottom: 3px solid #000000;
       text-transform: uppercase;
-      letter-spacing: 0px;
-      width: 90%;
+      width: 100%;
     }
 
-    /* Container que gerencia a distribuição vertical automática dos cards */
     .cards-container {
-      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 20px; 
-      min-height: 0; 
+      gap: 15px; 
     }
 
     /* Estrutura dos Cards de Semana */
     .card {
       background-color: #fdf1d3; 
-      border-radius: 40px;
-      padding: 0px 10px 10px 10px;
+      border-radius: 25px;
+      padding: 15px 10px;
       width: 100%;
       border: 1px solid rgba(133, 88, 26, 0.15);
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      flex: 1; 
-      transition: all 0.2s ease;
-      box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.3);
+      box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, 0.2);
     }
 
-    /* Título da Semana interno do Card */
     .card-title {
       text-align: center;
-      font-size: 30px;
+      font-size: 20px;
       font-weight: 700;
       color: #634113; 
-      margin-top: 15px;
-      margin-bottom: 25px;
+      margin-bottom: 15px;
     }
 
-    /* Divisão em duas colunas principais de designações */
+    /* Grid empilhado em telas móveis */
     .card-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      column-gap: 30px;
-      row-gap: 6px;
-      padding: 0 25px; 
+      grid-template-columns: 1fr;
+      row-gap: 12px;
+      padding: 0 5px; 
+    }
+    
+    .card-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
-    /* Alinhamento Avançado: Transforma a linha em um mini-grid de 3 partes */
     .assignment-row {
       display: grid;
-      grid-template-columns: 1fr auto 1fr; /* Esquerda (Função), Centro (:), Direita (Nome) */
+      grid-template-columns: 1.2fr auto 1.4fr;
       align-items: center;
-      font-size: 18px;
+      font-size: 15px;
       color: #3d2411;
       line-height: 1.4;
     }
     
-    /* 1. Função alinhada à esquerda */
     .assignment-row strong {
       color: #85581A; 
       font-weight: 600;
       text-align: right;
     }
     
-    /* 2. O ponto ":" cravado estático bem no centro */
     .assignment-row .colon {
       color: #85581A;
       font-weight: 600;
-      padding: 0 3px 0 0;
+      padding: 0 4px;
       text-align: center;
-      user-select: none; /* Impede seleção acidental */
+      user-select: none;
     }
     
-    /* 3. Nome dos irmãos alinhado à direita */
     .assignment-row .brother-name {
       text-align: left;
+      word-break: break-word;
     }
 
-    /* Espaçamento entre blocos específicos */
     .space-below {
-      margin-bottom: 8px;
+      margin-bottom: 0px; /* Desativado no mobile para manter coesão */
     }
 
-    /* Botão de excluir card individual */
     .remove-card-btn {
       position: absolute;
       top: 12px;
@@ -192,58 +195,91 @@
       border: none;
       color: #b91c1c;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: bold;
-      opacity: 0.2;
-      transition: opacity 0.2s;
-    }
-    .remove-card-btn:hover {
-      opacity: 1;
+      opacity: 0.4;
     }
 
-    /* Edição viva em tela */
     [contenteditable="true"]:focus {
-      outline: 1px dashed #85581A;
+      outline: 2px dashed #85581A;
       background-color: rgba(255, 255, 255, 0.6);
       border-radius: 3px;
     }
 
-    /* Estado de carregamento */
     .loading-msg {
       text-align: center;
-      font-size: 18px;
+      font-size: 16px;
       color: #85581A;
-      padding: 40px;
+      padding: 30px;
       font-weight: 500;
     }
 
-    /* Configurações de Impressão */
-    .no-print {
-      display: inline-block;
-    }
-    @media print {
-      body {
-        background-color: transparent;
+    .no-print { display: flex; }
+
+    /* --- 🖥️ AJUSTE PARA TELAS GRANDES (DESKTOP) --- */
+    @media (min-width: 850px) {
+      body { padding: 20px 0; }
+      .control-bar { 
+        max-width: 210mm; 
+        flex-direction: row; 
+        align-items: center; 
+        justify-content: space-between;
+        gap: 20px;
       }
-      .control-bar, .no-print {
-        display: none !important;
-      }
+      .sync-btn, .print-btn { width: auto; }
+      .seletor-container { flex-direction: row; align-items: center; width: auto; }
+      .seletor-semana { width: 220px; }
+      
       .a4-page {
-        box-shadow: none;
-        padding: 15mm 16mm;
-        margin: 0;
+        width: 210mm;
+        height: 297mm;
+        max-width: none;
+        padding: 10mm 10mm 20mm 10mm;
+      }
+      .title-container { margin-bottom: 18px; }
+      .title-container h1 { font-size: 35px; width: 90%; }
+      .cards-container { flex: 1; gap: 20px; min-height: 0; }
+      .card { border-radius: 40px; padding: 0px 10px 10px 10px; flex: 1; box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.3); }
+      .card-title { font-size: 30px; margin-top: 15px; margin-bottom: 25px; }
+      .card-grid { grid-template-columns: 1fr 1fr; column-gap: 30px; row-gap: 6px; padding: 0 25px; }
+      .assignment-row { font-size: 18px; grid-template-columns: 1fr auto 1fr; }
+      .space-below { margin-bottom: 8px; }
+      .remove-card-btn { opacity: 0.2; font-size: 16px; }
+    }
+
+    /* --- 🖨️ CONFIGURAÇÕES DE IMPRESSÃO RÍGIDA A4 --- */
+    @media print {
+      body { background-color: transparent; padding: 0; }
+      .control-bar, .no-print { display: none !important; }
+      .a4-page {
+        width: 210mm !important;
+        height: 297mm !important;
+        max-width: none !important;
+        box-shadow: none !important;
+        padding: 15mm 16mm !important;
+        margin: 0 !important;
         page-break-after: always;
       }
+      .title-container { margin-bottom: 18px !important; }
+      .title-container h1 { font-size: 35px !important; width: 90% !important; display: inline-block !important; }
+      .cards-container { flex: 1 !important; gap: 20px !important; min-height: 0 !important; display: flex !important; flex-direction: column !important; }
+      .card { border-radius: 40px !important; padding: 0px 10px 10px 10px !important; flex: 1 !important; display: flex !important; flex-direction: column !important; box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.3) !important; }
+      .card-title { font-size: 30px !important; margin-top: 15px !important; margin-bottom: 25px !important; }
+      .card-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; column-gap: 30px !important; row-gap: 6px !important; padding: 0 25px !important; }
+      .assignment-row { font-size: 18px !important; grid-template-columns: 1fr auto 1fr !important; }
+      .space-below { margin-bottom: 8px !important; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Barra superior para controle em tela -->
+  <!-- Painel unificado para controle e impressão em tela -->
   <div class="control-bar no-print">
-    <button class="sync-btn" onclick="buscarDadosDaPlanilha()">🔄 Atualizar Planilha</button>
+    <div style="display: flex; gap: 10px; flex-grow: 1; flex-wrap: wrap;">
+      <button class="sync-btn" style="flex: 1; min-width: 160px;" onclick="buscarDadosDaPlanilha()">🔄 Atualizar Planilha</button>
+      <button class="print-btn" style="flex: 1; min-width: 160px;" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+    </div>
     
-    <!-- Novo Seletor Interativo de Semana Inicial -->
     <div class="seletor-container">
       <span>📅 Mostrar a partir da:</span>
       <select id="semana-select" class="seletor-semana" onchange="mudarSemanaInicial()">
@@ -256,7 +292,7 @@
     
     <!-- Título Principal com Linha -->
     <div class="title-container">
-      <h1 contenteditable="true">DESIGNAÇÕES DE DEPARTAMENTOS</h1>
+      <h1 contenteditable="true">DESIGNAÇÃO SEMANAL</h1>
     </div>
 
     <!-- Área dos Cards Semanais (Gerados Dinamicamente) -->
@@ -266,10 +302,8 @@
   </div>
 
   <script>
-    // URL do CSV da sua planilha pública do Google Drive
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSBuS_Qe2LkVH7QEPbSvoFn50e7I71Waljbuk8b2UR1wxGkYZMoeEZUy7Moy1DF4pMfRlRsn0tyNDu4/pub?output=csv";
 
-    // Mapeamento das colunas da sua Planilha
     const MAPA_COLUNAS = {
       semana: 0,
       audioVideo: 1,
@@ -282,10 +316,8 @@
       indicadorExterno: 6
     };
 
-    // Memória global para guardar as linhas limpas da planilha
     let todasAsLinhasValidas = [];
 
-    // Executa automaticamente ao abrir a página
     window.onload = buscarDadosDaPlanilha;
 
     async function buscarDadosDaPlanilha() {
@@ -301,7 +333,6 @@
         const textoCSV = await resposta.text();
         const linhasRaw = processarCSV(textoCSV);
 
-        // Limpa a memória global
         todasAsLinhasValidas = [];
 
         if (linhasRaw.length <= 1) {
@@ -309,15 +340,13 @@
           return;
         }
 
-        // Filtra e armazena apenas linhas que possuem uma semana válida informada
-        for (let i = 1; i < linhasRaw.length; i++) {
+        for (let i = 1; i < linesRaw = linhasRaw.length; i++) {
           const col = linhasRaw[i];
           if (col && col.length > 0 && col[MAPA_COLUNAS.semana]) {
             todasAsLinhasValidas.push(col);
           }
         }
 
-        // Alimenta o componente select com as semanas disponíveis
         seletor.innerHTML = '';
         todasAsLinhasValidas.forEach((col, index) => {
           const opcao = document.createElement('option');
@@ -326,7 +355,6 @@
           seletor.appendChild(opcao);
         });
 
-        // Por padrão, renderiza as 4 primeiras semanas encontradas (começando do índice 0)
         renderizarCardsIniciandoEm(0);
 
       } catch (erro) {
@@ -341,14 +369,12 @@
       }
     }
 
-    // Função responsável por monitorar a troca no menu de seleção
     function mudarSemanaInicial() {
       const seletor = document.getElementById('semana-select');
       const indiceEscolhido = parseInt(seletor.value, 10) || 0;
       renderizarCardsIniciandoEm(indiceEscolhido);
     }
 
-    // Função que renderiza estritamente até 4 cards a partir do ponto escolhido
     function renderizarCardsIniciandoEm(indiceInicial) {
       const container = document.getElementById('cards-container');
       container.innerHTML = '';
@@ -361,10 +387,7 @@
       let cardsExibidos = 0;
 
       for (let i = indiceInicial; i < todasAsLinhasValidas.length; i++) {
-        // Trava rígida de segurança: Garante no máximo 4 cards na folha
-        if (cardsExibidos >= 4) {
-          break;
-        }
+        if (cardsExibidos >= 4) break;
 
         const col = todasAsLinhasValidas[i];
 
@@ -385,10 +408,8 @@
       }
     }
 
-    // Função inteligente: Trata quebra de linhas e detecta automaticamente o divisor do CSV (, ou ;)
     function processarCSV(texto) {
       const linhas = texto.split(/\r?\n/);
-      
       const primeiraLinha = linhas[0] || "";
       const divisor = (primeiraLinha.split(';').length > primeiraLinha.split(',').length) ? ';' : ',';
 
@@ -400,7 +421,6 @@
       });
     }
 
-    // Função auxiliar para criar a estrutura HTML
     function criarCardNaTela(dados) {
       const container = document.getElementById('cards-container');
       const novoCard = document.createElement('div');
